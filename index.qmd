@@ -1,11 +1,18 @@
 ---
-title: "HCannon001.github.io"
+title: "About Me"
+image: MyDog.jpg
+about: 
+  template: jolla
+  image-shape: round
+  image-width: 17em
+  links:
+    - text: Email
+      href: mailto:cannonhenry019@gmail.com
+    - text: This GitHub Repo
+      href: https://github.com/HCannon001/HCannon001.github.io
+---
 ---
 
-This is a Quarto website.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
-```{r}
-1 + 1
-```
+I am a student at Pomona College. I swim on the swim team and plan to major in either Computer Science, or Math. In my free time I like to hang out with friends, kiteboard/wingfoil, and play games.
