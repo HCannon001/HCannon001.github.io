@@ -11,6 +11,7 @@ website:
       - text: "Tidy Tuesday Visualizations"
         menu: 
           - href: canadian_births.qmd
+          - href: Attendance.qmd
           
 
 format:

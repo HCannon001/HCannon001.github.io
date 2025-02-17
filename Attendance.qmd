@@ -1,0 +1,31 @@
+---
+title: "Packers VS Viking Attendance"
+format: html
+---
+
+```{r, message=FALSE}
+#| echo: false
+library(readr)
+attendance <- read_csv("attendance.csv")
+```
+
+```{r, message=FALSE}
+#| echo: false
+library(tidyverse)
+```
+
+```{r}
+#| echo: false
+attendance <- attendance |>
+  filter(year > 2017) |>
+  filter(team_name == "Vikings" | team_name == "Packers")
+
+ggplot(attendance, aes(x = week, y = weekly_attendance, color = team)) +
+  geom_point() +
+  facet_wrap(~year)
+```
+
+The original data came from this data set: https://github.com/rfordatascience/tidytuesday/blob/main/data/2020/2020-02-04/attendance.csv?plain=1
+
+This data compares the attendence of the Green Bay packers and the Minnesota Vikings throughout the seasons of 2018 and 2019. Based on the graphs, it appears that on average the Packers typically have a higher attendence during a game compared to the Vikings. There are fluctuations however due to things such as home and aways games and success that season. For example the Packers had higher success in the 2019 season than in 2018 so their attendence was higher throught the year.
+
