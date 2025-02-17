@@ -4,7 +4,7 @@
     "href": "Attendance.html",
     "title": "Packers VS Viking Attendance",
     "section": "",
-    "text": "Warning: Removed 4 rows containing missing values or values outside the scale range\n(`geom_point()`).\n\n\n\n\n\n\n\n\n\nThe original data came from this data set: https://github.com/rfordatascience/tidytuesday/blob/main/data/2020/2020-02-04/attendance.csv?plain=1\nThis data compares the attendence of the Green Bay packers and the Minnesota Vikings throughout the seasons of 2018 and 2019. Based on the graphs, it appears that on average the Packers typically have a higher attendence during a game compared to the Vikings. There are fluctuations however due to things such as home and aways games and success that season. For example the Packers had higher success in the 2019 season than in 2018 so their attendence was higher throught the year."
+    "text": "The original data came from this data set: https://github.com/rfordatascience/tidytuesday/blob/main/data/2020/2020-02-04/attendance.csv?plain=1\nThis data compares the attendence of the Green Bay packers and the Minnesota Vikings throughout the seasons of 2018 and 2019. Based on the graphs, it appears that on average the Packers typically have a higher attendence during a game compared to the Vikings. There are fluctuations however due to things such as home and aways games and success that season. For example the Packers had higher success in the 2019 season than in 2018 so their attendence was higher throught the year."
   },
   {
     "objectID": "canadian_births.html",
@@ -19,5 +19,12 @@
     "title": "About",
     "section": "",
     "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "About Me",
+    "section": "",
+    "text": "I am a student at Pomona College. I swim on the swim team and plan to major in either Computer Science, or Math. In my free time I like to hang out with friends, kiteboard/wingfoil, and play games."
   }
 ]

@@ -14,7 +14,7 @@ attendance <- read_csv("attendance.csv")
 library(tidyverse)
 ```
 
-```{r}
+```{r, warning=FALSE}
 #| echo: false
 attendance <- attendance |>
   filter(year > 2017) |>
