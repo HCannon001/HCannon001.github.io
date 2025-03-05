@@ -1,8 +1,9 @@
 ---
 title: "The Office Line-Analysis"
-output:
-  html_document:
-    code_folding: hide
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
 knitr:
   opts_chunk:
     warning: false
