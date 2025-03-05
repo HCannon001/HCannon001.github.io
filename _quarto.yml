@@ -12,8 +12,9 @@ website:
         menu: 
           - href: canadian_births.qmd
           - href: Attendance.qmd
-          
-
+      - text: "Mini Project 2"
+        menu: 
+          - href: TheOfficeLineAnalysis.qmd
 format:
   html:
     theme: cosmo
