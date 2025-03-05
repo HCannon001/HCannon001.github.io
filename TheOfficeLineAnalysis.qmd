@@ -1,12 +1,11 @@
 ---
 title: "The Office Line-Analysis"
-format: html
-knitr:
-  opts_chunk:
-    warning: false
 output:
   html_document:
     code_folding: hide
+knitr:
+  opts_chunk:
+    warning: false
 ---
 
 ```{r, message=FALSE}
