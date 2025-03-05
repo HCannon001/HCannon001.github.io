@@ -102,7 +102,7 @@ ggplot(words_preceding_she_said, aes(x = char_following, y = count, text = char_
     title = 'Character following "Thats what she said"'
   ) +
   theme(
-    axis.text.x = element_text(size = 17, face = "bold"),
+    axis.text.x = element_text(size = 20, face = "bold"),
     axis.text.y = element_text(size = 14),
     axis.title.x = element_text(size = 16),
     axis.title.y = element_text(size = 16),
