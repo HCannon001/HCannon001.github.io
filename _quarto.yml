@@ -15,6 +15,9 @@ website:
       - text: "Mini Project 2"
         menu: 
           - href: TheOfficeLineAnalysis.qmd
+      - text: "Mini Project 3"
+        menu: 
+          - href: Game_Simulations.qmd
 format:
   html:
     theme: cosmo
