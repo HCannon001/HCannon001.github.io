@@ -18,6 +18,9 @@ website:
       - text: "Mini Project 3"
         menu: 
           - href: Game_Simulations.qmd
+      - text: "Mini Project 4"
+        menu: 
+          - href: Project 4.qmd
 format:
   html:
     theme: cosmo

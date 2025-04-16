@@ -163,6 +163,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
     </ul>
   </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-mini-project-4" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Mini Project 4</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-mini-project-4">    
+        <li>
+    <a class="dropdown-item" href="./Project 4.html">
+ <span class="dropdown-text">Review of Amazon AI Ethics</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -199,7 +210,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>For this project I aimed to simulate basketball games based on both the teams strength and on the opposing teams strength. First I will build a function that can simulate a basketball game based on two inputs, the strength of the focus team and the strength of the opposing team. To create variability we will make opposing strength more a random strength value centered around the input. Next we will simulate this many times to get a season percentage. We will then repeat the season percentage for each pairing of strengths 1-10 many times to get the statistics.</p>
+<p>For this project I amied to simulate basketball games based on both the teams strength and on the opposing teams strength. First I will build a function that can simulate a basketball game based on two inputs, the strength of the focus team and the strength of the opposing team. To create variability we will make opposing strength more a random strength value centered around the input. Next we will simulate this many times to get a season percentage. We will then repeat the season percentage for each pairing of strengths 1-10 many times to get the statistics.</p>
 <p>The following code is the simulation done for each game. Here is an example output:</p>
 <div class="cell">
 <details class="code-fold">
@@ -214,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (strength <span class="sc">&gt;</span> opposing_strength) {</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>      main_team_score <span class="ot">&lt;-</span> main_team_score <span class="sc">+</span> <span class="dv">1</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      difference <span class="ot">&lt;-</span> main_team_score <span class="sc">-</span> away_team_score</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (strength <span class="sc">&lt;</span> opposing_strength) {</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      away_team_score <span class="ot">&lt;-</span> away_team_score <span class="sc">+</span> <span class="dv">1</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>      difference <span class="ot">&lt;-</span> main_team_score <span class="sc">-</span> away_team_score</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    }</span>
