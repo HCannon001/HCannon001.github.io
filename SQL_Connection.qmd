@@ -1,0 +1,198 @@
+---
+title: "SQL Connection"
+format: html
+---
+
+```{r, message=FALSE}
+library(DBI)
+library(dplyr)
+library(tidyverse)
+```
+
+For this project we were given access to the database that contains traffic stops throughout the US. As someone that grew up in Oregon and now goes to school in California, I was curious about the three west coast states. I wanted to look at the differences in racial breakdowns of the stops between the three states. Furthermore I was curious how this breakdown compares to the true population breakdown of these states.
+
+First we connected to the server using code that is not shown so I don't show the password.
+
+```{r, echo=FALSE}
+con_traffic <- DBI::dbConnect(
+  RMariaDB::MariaDB(),
+  dbname = "traffic",
+  host = Sys.getenv("TRAFFIC_HOST"),
+  user = Sys.getenv("TRAFFIC_USER"),
+  password = Sys.getenv("TRAFFIC_PWD")
+)
+```
+
+Next we wanted to look at the breakdowns of the traffic stops depending on race. To look at this we looked at each states traffic stop data and combined the data together into percentages of the states traffic stops. This then allowed me to get a table with all three states and their ethnic breakdown.
+
+```{sql connection=con_traffic}
+#| output.var: "west_coast_sql"
+-- Oregon arrest data
+SELECT
+  CASE WHEN subject_race IS NULL THEN 'unknown' ELSE subject_race END AS subject_race,
+  COUNT(*) AS count_race,
+  100.0 * COUNT(*) / (SELECT COUNT(*) FROM or_statewide_2020_04_01) AS percentage,
+  'Oregon' AS state
+FROM or_statewide_2020_04_01
+GROUP BY
+  CASE WHEN subject_race IS NULL THEN 'unknown' ELSE subject_race END
+
+UNION ALL
+
+-- Washington arrest data
+SELECT
+  CASE WHEN subject_race IS NULL THEN 'unknown' ELSE subject_race END AS subject_race,
+  COUNT(*) AS count_race,
+  100.0 * COUNT(*) / (SELECT COUNT(*) FROM wa_statewide_2020_04_01) AS percentage,
+  'Washington' AS state
+FROM wa_statewide_2020_04_01
+GROUP BY
+  CASE WHEN subject_race IS NULL THEN 'unknown' ELSE subject_race END
+
+UNION ALL
+
+-- California arrest data
+SELECT
+  CASE WHEN subject_race IS NULL THEN 'unknown' ELSE subject_race END AS subject_race,
+  COUNT(*) AS count_race,
+  100.0 * COUNT(*) / (SELECT COUNT(*) FROM ca_statewide_2023_01_26) AS percentage,
+  'California' AS state
+FROM ca_statewide_2023_01_26
+GROUP BY
+  CASE WHEN subject_race IS NULL THEN 'unknown' ELSE subject_race END
+
+ORDER BY
+  state,
+  percentage DESC;
+```
+
+```{r}
+west_coast_sql
+```
+
+
+Next I graphed all three of the states in a side by side plot to compare the differences directly. What we found was that Oregon had far and away the most people that were considered white at the traffic stops. While California had the lowest number of white people, we saw they had the highest hispanic make-up, something to be expected as their state boarders Mexico. The most interesting finding from this was that a high quantity of the stops were unkown in Washington. This leads me to believe that they either arn't able to ask their race/ethnicity when they make a stop or they struggle to ask consistently.
+
+```{r}
+ggplot(west_coast_sql, aes(x = subject_race, y = percentage, fill = state)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    title = "Percentage of Each Race by State",
+    x = "Race",
+    y = "Percentage",
+    fill = "State"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+Next I was curious not about the differences between the states but the differences between the traffic stop breakdown and the true population makeup of these states. To figure this out I found data from the census that I was able to build into the table that we originally made. This allowed me to set up a chart where we could compare the differences.
+
+```{sql connection=con_traffic}
+#| output.var: "combined_data"
+-- Static population data
+SELECT 
+  subject_race, 
+  NULL AS count_race, 
+  percentage, 
+  state
+FROM (
+  SELECT 'white' AS subject_race, 71.0 AS percentage, 'Oregon Population' AS state
+  UNION ALL SELECT 'hispanic', 15.16, 'Oregon Population'
+  UNION ALL SELECT 'asian', 4.4, 'Oregon Population'
+  UNION ALL SELECT 'black', 1.8, 'Oregon Population'
+  UNION ALL SELECT 'native american', 1.0, 'Oregon Population'
+  UNION ALL SELECT 'pacific islander', 0.4, 'Oregon Population'
+  UNION ALL SELECT 'two or more races', 6.2, 'Oregon Population'
+
+  UNION ALL SELECT 'white', 63.0, 'Washington Population'
+  UNION ALL SELECT 'hispanic', 14.6, 'Washington Population'
+  UNION ALL SELECT 'asian', 9.3, 'Washington Population'
+  UNION ALL SELECT 'black', 3.8, 'Washington Population'
+  UNION ALL SELECT 'native american', 1.1, 'Washington Population'
+  UNION ALL SELECT 'pacific islander', 0.7, 'Washington Population'
+  UNION ALL SELECT 'two or more races', 7.5, 'Washington Population'
+
+  UNION ALL SELECT 'white', 35.0, 'California Population'
+  UNION ALL SELECT 'hispanic', 39.4, 'California Population'
+  UNION ALL SELECT 'asian', 15.0, 'California Population'
+  UNION ALL SELECT 'black', 5.0, 'California Population'
+  UNION ALL SELECT 'native american', 0.8, 'California Population'
+  UNION ALL SELECT 'pacific islander', 0.3, 'California Population'
+  UNION ALL SELECT 'two or more races', 4.5, 'California Population'
+) AS static_data
+
+UNION ALL
+
+-- Oregon arrest data
+SELECT
+  CASE WHEN subject_race IS NULL THEN 'unknown' ELSE subject_race END AS subject_race,
+  COUNT(*) AS count_race,
+  100.0 * COUNT(*) / (SELECT COUNT(*) FROM or_statewide_2020_04_01) AS percentage,
+  'Oregon' AS state
+FROM or_statewide_2020_04_01
+GROUP BY
+  CASE WHEN subject_race IS NULL THEN 'unknown' ELSE subject_race END
+
+UNION ALL
+
+-- Washington arrest data
+SELECT
+  CASE WHEN subject_race IS NULL THEN 'unknown' ELSE subject_race END AS subject_race,
+  COUNT(*) AS count_race,
+  100.0 * COUNT(*) / (SELECT COUNT(*) FROM wa_statewide_2020_04_01) AS percentage,
+  'Washington' AS state
+FROM wa_statewide_2020_04_01
+GROUP BY
+  CASE WHEN subject_race IS NULL THEN 'unknown' ELSE subject_race END
+
+UNION ALL
+
+-- California arrest data
+SELECT
+  CASE WHEN subject_race IS NULL THEN 'unknown' ELSE subject_race END AS subject_race,
+  COUNT(*) AS count_race,
+  100.0 * COUNT(*) / (SELECT COUNT(*) FROM ca_statewide_2023_01_26) AS percentage,
+  'California' AS state
+FROM ca_statewide_2023_01_26
+GROUP BY
+  CASE WHEN subject_race IS NULL THEN 'unknown' ELSE subject_race END
+
+ORDER BY
+  state,
+  percentage DESC;
+```
+
+Once we had the table built, we compared them by faceting them side by side with the traffic stops on the left and the true populations on the right. This allowed for easy comparison. What we found in California was that more of the people involved in traffic stops were white than in the true population. The difference showed up in the hipanic part of the graph with less hispanic stopping compared to the true population. This could be because the true population is self reported and the police making the stop struggling to know their true ethnicity. We saw a similar thing occur in Oregon as well. The differences there were probably due to the self reporting once again. The only state that had an increase in white from traffic stops to the actual population was Washington. Going against the other two, this leads us to question if it is due to the high number of unknown or if it is due to a way the traffic stops are being made.
+
+```{r}
+ggplot(combined_data, aes(x = subject_race, y = percentage, fill = subject_race)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~ state, nrow = 3, ncol = 2) +
+  labs(
+    title = "Original Racial Composition by State (from SQL Data)",
+    x = "Race",
+    y = "Percentage",
+    fill = NULL
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.text = element_text(face = "bold", size = 12), 
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14)
+  ) +
+  guides(fill = "none")
+```
+
+Overall I wanted to look at the three states and the way race is compared internally and within the three states. What I found was that there was poor data collection when the traffic stops were made but there is a high likely hood that these stops are not made with an underlying bias if the traffic stops were made with the errors there appears to be. That being said there needs to be further investigation into the way data is collected to make sure that we are able to get accurate data that reflects what is put on the census forms.
+
+```{r}
+DBI::dbDisconnect(con_traffic)
+```
+
+**Refrences**
+
+Pierson, Emma, Camelia Simoiu, Jan Overgoor, Sam Corbett-Davies, Daniel Jenson, Amy Shoemaker, Vignesh Ramachandran, et al. 2020. “A Large-Scale Analysis of Racial Disparities in Police Stops Across the United States.” Nature Human Behaviour, 1–10.
+
+U.S. Census Bureau. 2023. QuickFacts: California; Oregon; Washington. U.S. Department of Commerce. Retrieved from https://www.census.gov/quickfacts/
+

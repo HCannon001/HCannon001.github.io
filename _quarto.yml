@@ -23,7 +23,7 @@ website:
           - href: Project 4.qmd
       - text: "Mini Project 5"
         menu: 
-          - href: SQL Connection.qmd
+          - href: SQL_Connection.qmd
 format:
   html:
     theme: cosmo
