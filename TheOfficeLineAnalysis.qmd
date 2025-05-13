@@ -9,11 +9,12 @@ knitr:
     warning: false
 ---
 
-For this project, I chose to analyze a data set containing every line from the she "The Office". The data set was found at https://www.kaggle.com/datasets/fabriziocominetti/the-office-lines?resource=download. In this data set I wanted to look at how  the characters from my favorite show appeared through the show and how an iconic joke appeared as well.
+For this project, I chose to analyze a data set containing every line from "The Office". The data set was found [here](https://www.kaggle.com/datasets/fabriziocominetti/the-office-lines). In this data set I wanted to look at how the characters from my favorite show appeared through the show and how an iconic joke appeared as well.
 
 ```{r, message=FALSE}
 #| echo: false
 library(readr)
+library(stringr)
 the_office_lines <- read_csv("the-office_lines.csv")
 ```
 
@@ -24,12 +25,13 @@ library(tidyverse)
 
 ```{r, message=FALSE}
 top_characters <- the_office_lines |>
+  filter(str_detect(Line, "\\[.*\\]")) |>
   group_by(Character) |>
   summarize(total_count = n(), .groups = "drop") |>
   slice_max(total_count, n = 10)
 
 lines_per_season <- the_office_lines |>
-  filter(Character %in% top_characters$Character) |>
+  semi_join(top_characters, by = "Character") |>
   group_by(Character, Season, add = TRUE) |>
   summarize(appearences = n(), .groups = "drop") |>
   group_by(Season) |>
@@ -44,7 +46,7 @@ ggplot(lines_per_season, aes(x = Season, y = percent, color = Character)) +
   labs(
     x = "Season",
     y = "Percentage",
-    title = "Line Breakdown Per Season"
+    title = "Lines With Direction Breakdown Per Season"
   ) +
   theme(
     axis.text.x = element_text(size = 14),
@@ -55,13 +57,13 @@ ggplot(lines_per_season, aes(x = Season, y = percent, color = Character)) +
   )
 ```
 
-The first thing that I analyzed is in the graph above, showing the distribution of lines characters have each season of the show. The graph shows the 10 characters with the highest total lines in the show and their share of each season of the office between the 10. As you can see Micheal dominates the share of lines through his time with the office, only slightly declining throughout. As he leaves the show following season 8, you see a jump in other characters roles as they needed to fill the gap that Michael left, such as Andy and Dwight. This graph shows the importance that Michael had to the show and how much it changed in its last two seasons.
+The first thing I analyzed is the graph above, which shows the distribution of lines each character has per season in the show where they were given stage directions, designated with [ and ] somewhere in the line. The graph displays the 10 characters with the highest total lines containing these directions in the show and their share of these lines per season. As you can see, Michael dominates the share of lines containing stage directions throughout his time on The Office, with only a slight decline until a more significant drop after season 7. Other characters saw a slight increase following this drop, but for the most part, there was an equal split among the remaining characters in terms of the percentage of lines containing stage directions.
 
 
 ```{r}
 thats_what_she_said <- the_office_lines |>
   mutate(lower_lines = str_to_lower(Line)) |>
-  mutate(quote = str_extract(lower_lines, "that’s what she said")) |>
+  mutate(quote = str_extract(lower_lines, "that\\’?s what she said")) |>
   filter(!is.na(quote)) |>
   mutate(season_text = str_c(Season)) |>
   group_by(season_text) |>
@@ -85,7 +87,7 @@ ggplot(thats_what_she_said, aes(x = season_text, y = count)) +
   )
 ```
 
-The next thing I looked at focused on Michaels famous joke, "that's what she said". The chart above breaks down the usage in the show throughout the nine seasons. As you can see in the chart, they created the joke starting in season 2 and slowly declined in use as the show went on before Michael's departure following season season 7. There is a return in season 9, likely due to Michael's return for the finale.
+The next thing I looked at focused on Michael's famous joke, "that's what she said". The chart above breaks down the usage in the show throughout the nine seasons. As you can see in the chart, they created the joke starting in season 2 and slowly declined in use as the show went on before Michael's departure following season season 7. There is a return in season 9, likely due to Michael's return for the finale.
 
 
 ```{r}

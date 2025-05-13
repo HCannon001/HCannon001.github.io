@@ -19,7 +19,7 @@ library(praise)
 set.seed(47)
 ```
 
-The following code is the simulation done for each game. Here is an example output:
+The following code is the simulation done for each game. Each game is composed by fitting a score for each team on a normal curve bsed on their strength then comparing to see who won. Additionally I added an if statement in there incase they get the same score. In basketball they never have a tied game so I had to ensure that for accuracy they couldn't tie int he simulation either. Here is an example output:
 
 ```{r, message=FALSE}
 simulate_game <- function(count, strength, opposing_strength_avg) {

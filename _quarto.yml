@@ -8,22 +8,17 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - text: "Tidy Tuesday Visualizations"
+      - text: "Data Projects"
         menu: 
           - href: canadian_births.qmd
           - href: Attendance.qmd
-      - text: "Mini Project 2"
-        menu: 
           - href: TheOfficeLineAnalysis.qmd
-      - text: "Mini Project 3"
-        menu: 
           - href: Game_Simulations.qmd
-      - text: "Mini Project 4"
-        menu: 
           - href: Project 4.qmd
-      - text: "Mini Project 5"
-        menu: 
           - href: SQL_Connection.qmd
+      - text: "Presentation"
+        menu: 
+          - href: SlideShow.qmd
 format:
   html:
     theme: cosmo

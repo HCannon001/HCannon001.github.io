@@ -127,50 +127,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tidy-tuesday-visualizations" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Tidy Tuesday Visualizations</span>
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Data Projects</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-tidy-tuesday-visualizations">    
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-data-projects">    
         <li>
     <a class="dropdown-item" href="./canadian_births.html">
- <span class="dropdown-text">Canadian Births</span></a>
+ <span class="dropdown-text">Canadian Births Through Recent Years</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./Attendance.html">
  <span class="dropdown-text">Packers VS Viking Attendance</span></a>
   </li>  
-    </ul>
-  </li>
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-mini-project-2" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Mini Project 2</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-mini-project-2">    
         <li>
     <a class="dropdown-item" href="./TheOfficeLineAnalysis.html">
  <span class="dropdown-text">The Office Line-Analysis</span></a>
   </li>  
-    </ul>
-  </li>
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-mini-project-3" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Mini Project 3</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-mini-project-3">    
         <li>
     <a class="dropdown-item" href="./Game_Simulations.html">
  <span class="dropdown-text">Basketball Game Simulations</span></a>
   </li>  
-    </ul>
-  </li>
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-mini-project-4" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Mini Project 4</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-mini-project-4">    
         <li>
     <a class="dropdown-item" href="./Project 4.html">
  <span class="dropdown-text">Review of Amazon AI Ethics</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./SQL_Connection.html">
+ <span class="dropdown-text">SQL Connection</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-presentation" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Presentation</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-presentation">    
+        <li>
+    <a class="dropdown-item" href="./SlideShow.html">
+ <span class="dropdown-text">Journey Through the Simulation</span></a>
   </li>  
     </ul>
   </li>
@@ -211,7 +205,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>For this project I amied to simulate basketball games based on both the teams strength and on the opposing teams strength. First I will build a function that can simulate a basketball game based on two inputs, the strength of the focus team and the strength of the opposing team. To create variability we will make opposing strength more a random strength value centered around the input. Next we will simulate this many times to get a season percentage. We will then repeat the season percentage for each pairing of strengths 1-10 many times to get the statistics.</p>
-<p>The following code is the simulation done for each game. Here is an example output:</p>
+<p>The following code is the simulation done for each game. Each game is composed by fitting a score for each team on a normal curve bsed on their strength then comparing to see who won. Additionally I added an if statement in there incase they get the same score. In basketball they never have a tied game so I had to ensure that for accuracy they couldn’t tie int he simulation either. Here is an example output:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
