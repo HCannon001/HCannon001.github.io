@@ -9,10 +9,9 @@ library(dplyr)
 library(tidyverse)
 ```
 
-For this project we were given access to the database that contains traffic stops throughout the US. As someone that grew up in Oregon and now goes to school in California, I was curious about the three west coast states. I wanted to look at the differences in racial breakdowns of the stops between the three states. Furthermore I was curious how this breakdown compares to the true population breakdown of these states.
+For this project, we were given access to a database containing traffic stop data from across the United States. As someone who grew up in Oregon and now attends college in California, I was particularly interested in the three West Coast states—Oregon, California, and Washington. I wanted to examine the racial breakdown of traffic stops in each state and compare those figures to the actual population demographics. This comparison could reveal potential disparities in how different racial groups are stopped by law enforcement.
 
-First we connected to the server using code that is not shown so I don't show the password.
-
+To begin the analysis, we connected to the database using secure credentials (not shown here to protect access).
 ```{r, echo=FALSE}
 con_traffic <- DBI::dbConnect(
   RMariaDB::MariaDB(),
@@ -23,7 +22,7 @@ con_traffic <- DBI::dbConnect(
 )
 ```
 
-Next we wanted to look at the breakdowns of the traffic stops depending on race. To look at this we looked at each states traffic stop data and combined the data together into percentages of the states traffic stops. This then allowed me to get a table with all three states and their ethnic breakdown.
+Next, we analyzed the racial breakdown of traffic stops in each state. To do this, we examined the traffic stop data for Oregon, California, and Washington individually, then calculated the percentage of total stops attributed to each racial group within each state. This approach allowed us to standardize the data and make meaningful comparisons across states. The resulting table displays the racial composition of traffic stops side by side for all three states.
 
 ```{sql connection=con_traffic}
 #| output.var: "west_coast_sql"
@@ -70,8 +69,7 @@ ORDER BY
 west_coast_sql
 ```
 
-
-Next I graphed all three of the states in a side by side plot to compare the differences directly. What we found was that Oregon had far and away the most people that were considered white at the traffic stops. While California had the lowest number of white people, we saw they had the highest hispanic make-up, something to be expected as their state boarders Mexico. The most interesting finding from this was that a high quantity of the stops were unkown in Washington. This leads me to believe that they either arn't able to ask their race/ethnicity when they make a stop or they struggle to ask consistently.
+I then created a side-by-side bar plot to visually compare the racial breakdown of traffic stops across the three states. The results showed that Oregon had the highest proportion of individuals identified as white in its traffic stop data. In contrast, California had the lowest proportion of white individuals and the highest proportion of Hispanic individuals—an expected trend given its large Hispanic population and proximity to the Mexican border. One particularly notable finding was the high percentage of traffic stops labeled as "unknown" in Washington. This suggests that either law enforcement officers in Washington are not required to record race/ethnicity during stops, or that there may be inconsistencies in how that information is collected.
 
 ```{r}
 ggplot(west_coast_sql, aes(x = subject_race, y = percentage, fill = state)) +
@@ -86,7 +84,7 @@ ggplot(west_coast_sql, aes(x = subject_race, y = percentage, fill = state)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-Next I was curious not about the differences between the states but the differences between the traffic stop breakdown and the true population makeup of these states. To figure this out I found data from the census that I was able to build into the table that we originally made. This allowed me to set up a chart where we could compare the differences.
+Next, I shifted focus from comparing the three states to examining the gap between the racial breakdown of traffic stops and the actual population demographics within each state. To do this, I incorporated U.S. Census data into the original table, aligning each racial group's share of traffic stops with their corresponding share of the state’s population. This allowed me to create a comparative chart that highlights potential disparities between who is being stopped and the overall demographic makeup of each state.
 
 ```{sql connection=con_traffic}
 #| output.var: "combined_data"
@@ -163,7 +161,7 @@ ORDER BY
   percentage DESC;
 ```
 
-Once we had the table built, we compared them by faceting them side by side with the traffic stops on the left and the true populations on the right. This allowed for easy comparison. What we found in California was that more of the people involved in traffic stops were white than in the true population. The difference showed up in the hipanic part of the graph with less hispanic stopping compared to the true population. This could be because the true population is self reported and the police making the stop struggling to know their true ethnicity. We saw a similar thing occur in Oregon as well. The differences there were probably due to the self reporting once again. The only state that had an increase in white from traffic stops to the actual population was Washington. Going against the other two, this leads us to question if it is due to the high number of unknown or if it is due to a way the traffic stops are being made.
+Once the table was complete, we visualized the data using a faceted chart that placed traffic stop data on the left and population demographics on the right for each state. This layout allowed for easy side-by-side comparison. In California, we observed that white individuals made up a higher proportion of traffic stops than their share of the general population. The difference was most noticeable in the Hispanic category, where fewer Hispanic individuals were stopped relative to their proportion of the population. One possible explanation is that census data is self-reported, while officers may rely on visual assessments during traffic stops, potentially leading to underreporting or misclassification of ethnicity. A similar pattern appeared in Oregon, where discrepancies may also stem from differences in reporting methods. Interestingly, Washington was the only state where the percentage of white individuals was higher in the general population than in traffic stops. This reversal raises questions—either the large number of “unknown” entries in Washington's stop data is skewing the results, or there may be a difference in how traffic stops are being conducted or recorded in that state.
 
 ```{r}
 ggplot(combined_data, aes(x = subject_race, y = percentage, fill = subject_race)) +
@@ -184,7 +182,7 @@ ggplot(combined_data, aes(x = subject_race, y = percentage, fill = subject_race)
   guides(fill = "none")
 ```
 
-Overall I wanted to look at the three states and the way race is compared internally and within the three states. What I found was that there was poor data collection when the traffic stops were made but there is a high likely hood that these stops are not made with an underlying bias if the traffic stops were made with the errors there appears to be. That being said there needs to be further investigation into the way data is collected to make sure that we are able to get accurate data that reflects what is put on the census forms.
+Overall, my goal was to examine how race is represented within traffic stop data both within and across the three West Coast states. The analysis revealed inconsistencies and limitations in the way racial data is collected during traffic stops, suggesting that the dataset may not be fully reliable. While some discrepancies between traffic stop data and census demographics could indicate potential bias, it is also possible that these gaps are due to poor or inconsistent data collection practices rather than intentional discrimination. This highlights the need for improved and standardized data collection procedures, so that future analyses can more accurately reflect demographic realities and support informed policy decisions.
 
 ```{r}
 DBI::dbDisconnect(con_traffic)
@@ -195,4 +193,3 @@ DBI::dbDisconnect(con_traffic)
 Pierson, Emma, Camelia Simoiu, Jan Overgoor, Sam Corbett-Davies, Daniel Jenson, Amy Shoemaker, Vignesh Ramachandran, et al. 2020. “A Large-Scale Analysis of Racial Disparities in Police Stops Across the United States.” Nature Human Behaviour, 1–10.
 
 U.S. Census Bureau. 2023. QuickFacts: California; Oregon; Washington. U.S. Department of Commerce. Retrieved from https://www.census.gov/quickfacts/
-

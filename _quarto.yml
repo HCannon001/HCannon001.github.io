@@ -19,6 +19,9 @@ website:
       - text: "Presentation"
         menu: 
           - href: SlideShow.qmd
+      - text: "Resume"
+        menu: 
+          - href: Resume.pdf
 format:
   html:
     theme: cosmo

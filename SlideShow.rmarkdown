@@ -1,0 +1,582 @@
+---
+title: "Journey Through the Simulation"
+author: "Henry Cannon"
+subtitle: "5/13/2025"
+format:
+  revealjs:
+    scrollable: true
+    slide-number: true
+    show-slide-number: all
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r, message=FALSE}
+#| echo: false
+library(tidyverse)
+library(purrr)
+library(praise)
+set.seed(47)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Background
+
+Focused on sports
+
+Figured a team sport would be the easiest to recreate
+
+Turned to Basketball due to the high scores and lower variation
+
+## The Code
+
+::: {.panel-tabset}
+### Creating a Game
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, message=FALSE}
+simulate_game <- function(count, strength, opposing_strength_avg) {
+  opposing_strength <- rnorm(1, opposing_strength_avg, 1)
+  
+  main_team_score = round(rnorm(1, mean = 115 + strength - opposing_strength, abs(1-strength)))
+  away_team_score = round(rnorm(1, mean = 115 + opposing_strength - strength, abs(1-strength)))
+  difference = main_team_score - away_team_score
+  if (difference == 0) {
+    if (strength > opposing_strength) {
+      main_team_score <- main_team_score + 1
+      difference <- main_team_score - away_team_score
+    } else if (strength < opposing_strength) {
+      away_team_score <- away_team_score + 1
+      difference <- main_team_score - away_team_score
+    }
+  }
+  
+  results <- data.frame(
+    game = count,
+    main_team_score = main_team_score,
+    away_team_score = away_team_score,
+    strength = strength,
+    opposing_strength = opposing_strength,
+    difference = difference
+  )
+  return (results)
+}
+
+simulate_game(1, 5, 5)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Creating a Season
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, message=FALSE}
+
+season_simulation <- function(count, strength_input,  opposing_strength_avg_input) {
+  params <- list(
+    count = 1:82,
+    strength = rep(strength_input, 82),
+    opposing_strength_avg = rep(opposing_strength_avg_input, 82)
+  )
+
+  season <- list_rbind(pmap(params, simulate_game)) |>
+    select(difference) |>
+    mutate(win = difference > 0)
+  return_df <- data.frame(
+    season_perc = mean(season$win)
+  )
+  return (return_df)
+}
+
+season_simulation(1, 5, 5)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Simulating 50 Times
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, message=FALSE}
+
+perc_sim <- function(strength, opposing_strength) {
+  params <- list(
+      count = 1:50,
+      strength_input = rep(strength, 50),
+      opposing_strength_avg_input = rep(opposing_strength, 50)
+    )
+  itterations <- list_rbind(pmap(params, season_simulation)) |>
+    mutate(strength_level = strength) |>
+    mutate(opposing_strength = opposing_strength) |>
+    mutate(winning_perc = mean(season_perc))
+  return(
+    itterations |>
+      summarise(
+        winning_perc = mean(winning_perc),
+        strength_level = first(strength_level),
+        opposing_strength = first(opposing_strength)
+      )
+  )
+}
+
+perc_sim(5, 5)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### All Matchups
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, message=FALSE, echo=FALSE}
+
+sim_params <- list(
+  strength = rep(1:10, times = 10),
+  opposing_strength = rep(1:10, each = 10)
+)
+
+perc_breakdown <- list_rbind(pmap(sim_params, perc_sim))
+head(perc_breakdown, n = 10)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:::
+
+## The Results
+::: {.panel-tabset}
+
+### Heat Map breakdown
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, echo=FALSE}
+ggplot(perc_breakdown, aes(x = strength_level, y = opposing_strength, fill = winning_perc)) +
+  geom_tile() +
+  scale_fill_gradient(low = "red", high = "green", name = "Win %") +
+  theme_minimal()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Scatter Plot Breakdown
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, message=FALSE, echo=FALSE}
+ggplot(perc_breakdown, aes(x = strength_level - opposing_strength, y = winning_perc)) +
+  geom_point() +
+  geom_smooth(se = FALSE)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
