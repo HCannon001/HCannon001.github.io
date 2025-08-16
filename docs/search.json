@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "About Me",
     "section": "",
-    "text": "I am a student at Pomona College. I swim on the swim team and plan to double major in both Math and Computer Science. I am drawn to problem solving and challanging tasks. On the side I enjoy kiteboarding, wingfoiling, and spending time with friends.\n Download My Resume Here"
+    "text": "This project was developed for my Foundations of Data Science course, where I explored methods for cleaning, analyzing, and visualizing large datasets. I designed efficient data pipelines to process raw information, applied statistical techniques to uncover meaningful insights, and created clear visualizations to communicate results. The project emphasized both technical implementation and data-driven storytelling, highlighting the importance of making complex analyses accessible and interpretable."
   },
   {
     "objectID": "TheOfficeLineAnalysis.html",
