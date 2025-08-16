@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "HCannon001.github.io"
+  title: "Henry Cannon"
   navbar:
     left:
       - href: index.qmd
@@ -16,12 +16,9 @@ website:
           - href: Game_Simulations.qmd
           - href: Project 4.qmd
           - href: SQL_Connection.qmd
-      - text: "Presentation"
+      - text: "Final Presentation"
         menu: 
           - href: SlideShow.qmd
-      - text: "Resume"
-        menu: 
-          - href: Resume.pdf
 format:
   html:
     theme: cosmo

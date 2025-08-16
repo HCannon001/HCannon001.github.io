@@ -10,14 +10,10 @@ about:
       href: mailto:cannonhenry019@gmail.com
     - text: This GitHub Repo
       href: https://github.com/HCannon001/HCannon001.github.io
+    - text: LinkedIn
+      href: https://www.linkedin.com/in/henry-l-cannon/
 ---
 ---
 
 
-
-I am a student at Pomona College. I swim on the swim team and plan to double major in both Math and Computer Science. I am drawn to problem solving and challanging tasks. On the side I enjoy kiteboarding, wingfoiling, and spending time with friends.
-
-
-<a href="Resume - Henry Cannon-2.pdf" target="_blank">
-  <button>Download My Resume Here</button>
-</a>
+This project was developed for my Foundations of Data Science course, where I explored methods for cleaning, analyzing, and visualizing large datasets. I designed efficient data pipelines to process raw information, applied statistical techniques to uncover meaningful insights, and created clear visualizations to communicate results. The project emphasized both technical implementation and data-driven storytelling, highlighting the importance of making complex analyses accessible and interpretable.
